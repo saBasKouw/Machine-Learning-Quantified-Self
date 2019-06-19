@@ -42,7 +42,7 @@ def reshape_data(data,labels):
     #     new_df.iloc[0,new_df.columns.get_loc(labels.columns[0])] = labels[j][0]
     #     print(new_df)
     time = np.array(range(0, len(new_df)), dtype=np.float32)
-    time = time * (1 / 200 / 5 / 8)
+    time = time * (1 / 200 / 8)
     new_df["Time (s)"] = time
     new_df["Time (s)"] = new_df["Time (s)"] + 1559822765
     new_df["Date"] = pd.to_datetime(new_df['Time (s)'],unit='s')
@@ -125,7 +125,7 @@ OutlierDistr = DistributionBasedOutlierDetection()
 OutlierDist = DistanceBasedOutlierDetection()
 
 #And investigate the approaches for all relevant attributes.
-#for col in outlier_columns:
+for col in outlier_columns:
     #normality(dataset[col])
     #DataViz.plot_dataset(dataset, [col,col], ['exact', 'exact'], ['line', 'points'])
     # And try out all different approaches. Note that we have done some optimization
@@ -149,12 +149,12 @@ OutlierDist = DistanceBasedOutlierDetection()
     # # DataViz.plot_imputed_values(kalman_dataset, ['original', 'kalman'], col, kalman_dataset[col])
     # # DataViz.plot_dataset(kalman_dataset, [col, col+'_kalman'], ['exact','exact'], ['line', 'line'])
     #
-    # try:
-    #     dataset_ = OutlierDist.local_outlier_factor(dataset, [col], 'euclidean', 5)
-    #     DataViz.plot_dataset(dataset_, [col, 'lof'], ['exact','exact'], ['line', 'points'])
-    # except MemoryError as e:
-    #     print('Not enough memory available for lof...')
-    #     print('Skipping.')
+    try:
+        dataset_ = OutlierDist.local_outlier_factor(dataset, [col], 'euclidean', 5)
+        DataViz.plot_dataset(dataset_, [col, 'lof'], ['exact','exact'], ['line', 'points'])
+    except MemoryError as e:
+        print('Not enough memory available for lof...')
+        print('Skipping.')
     #transform(dataset,col)
     #
     # # Remove all the stuff from the dataset again.
@@ -185,5 +185,5 @@ def pipeline(dataset):
     dataset.to_csv(dataset_path + 'chapter3_result_outliers.csv')
     #DataViz.plot_dataset(dataset, ["s1","s1"], ['exact', 'exact'], ['line', 'points'])
 
-pipeline(dataset)
+#pipeline(dataset)
 
